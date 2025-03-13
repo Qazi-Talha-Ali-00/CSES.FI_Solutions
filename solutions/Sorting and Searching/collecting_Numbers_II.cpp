@@ -1,24 +1,47 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int main()
 {
     int n,m;
-    cin>>n;
-    unorderd_map<int,int> ans;
-    int x;
-    for(int i=0;i<n;i++)
-    {
-        cin>>x;
-        ans[x] = i;
-    }
-    while(m--)
-    {
-        int a ,b;
+    cin>>n>>m;
+    unordered_map<int,int> m_keys,m_index;
+    for(int i=1;i<n;i++){
+        int a;
         cin>>a;
-        cin>>b;
-        if (ans.count(a) && ans.count(b)) {
-        swap(ans[a], ans[b]);
+        m_keys[a]=i;
+        m_index[i]=a;
     }
+    int count =1,start=m_keys[1];
+    for(int i=2;i<=n;i++){
+        if(start < m_keys[i]){
+            start = m_keys[i];
+        }else{
+            count++;
+            start = m_keys[i];
+        }
     }
-      return 0;
+    int a,b;
+    for(int i=0;i<m;i++){
+        // these are the positions that needs to be swapped
+        cin>>a>>b;
+        int val_a,val_b;
+        val_a=m_index[a];
+        val_b = m_index[b];
+        if(a < b){
+            
+            if(val_b < val_a){
+                count--;
+                cout<<count<<endl;
+            }else{
+
+            }
+        }else{
+            if(val_b > val_a){
+
+            }else{
+
+            }
+        }
+    }
+    return 0;
 }
