@@ -31,8 +31,30 @@ int main() {
     for (int i = 0; i < n; i++) {
         cin >> coins[i];
     }
-    // Initialize the DP table with -1
-    vector<vector<long long int>> dp(n, vector<long long int>(x + 1, -1));
-    cout << ans(coins, 0, x, dp);
+    // Initialize the DP table with 1
+    // vector<vector<long long int>> dp(n,vector<long long int>(x+1,0));
+    // for(int i=0;i<n;i++){
+    //     dp[i][0]=1;
+    // }
+    vector<long long int> dp(x+1,0);
+    dp[0]=1;
+    for(int i=n-1;i>=0;i--){
+        for(int j=1;j<=x;j++){
+            int include,exclude;
+            if(j-coins[i] < 0){
+                include =0;
+            }else{
+                include = dp[j-coins[i]];
+            }
+            if(i+1 < n){
+                exclude = dp[j];
+            }else{
+                exclude = 0;
+            }
+            dp[j]=((include + exclude) % MOD);
+
+        }
+    }
+    cout<<dp[x];
     return 0;
 }
