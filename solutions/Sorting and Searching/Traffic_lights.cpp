@@ -5,45 +5,38 @@ int main() {
     int x, n;
     cin >> x >> n;
     
-    // Store positions of traffic lights
     set<int> positions;
-    // Initialize with street boundaries
-    positions.insert(0);
-    positions.insert(x);
+    positions.insert(0);  // Start of the street
+    positions.insert(x);  // End of the street
     
-    // Store segments (lengths between consecutive lights)
-    multiset<int, greater<int>> segments;
-    segments.insert(x); // Initially, the whole street is one segment
-    
-    vector<int> results;
+    map<int, int> lengths;  // Map to store frequency of each passage length
+    lengths[x] = 1;  // Initially, there's only one passage of length x
     
     for (int i = 0; i < n; i++) {
         int pos;
         cin >> pos;
         
-        // Find the segment where the new traffic light will be placed
+        // Find the positions before and after the new traffic light
         auto it = positions.upper_bound(pos);
         int right = *it;
         int left = *(--it);
         
-        // Remove the old segment
-        segments.erase(segments.find(right - left));
+        // Remove the old passage length
+        lengths[right - left]--;
+        if (lengths[right - left] == 0) {
+            lengths.erase(right - left);
+        }
         
-        // Add two new segments
-        segments.insert(pos - left);
-        segments.insert(right - pos);
+        // Add the two new passage lengths
+        lengths[pos - left]++;
+        lengths[right - pos]++;
         
-        // Add the new traffic light position
+        // Add the new position to our set
         positions.insert(pos);
         
-        // The longest segment is at the top of our multiset
-        results.push_back(*segments.begin());
-    }
-    
-    // Print results
-    for (int result : results) {
-        cout << result << " ";
+        // Print the maximum length (the largest key in the map)
+        cout << lengths.rbegin()->first << " ";
     }
     
     return 0;
-}   
+}
